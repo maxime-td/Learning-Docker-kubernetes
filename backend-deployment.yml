@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: back-training-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: back-training-app
+  template:
+    metadata:
+      labels:
+        app: back-training-app
+    spec:
+      containers:
+      - name: backend
+        image: axelpereira/k8s-training-test-app-back:1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmap
+              key: MONGO_HOST
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmap
+              key: MONGO_PORT
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmap
+              key: MONGO_DB
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: MONGO_USERNAME
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: MONGO_PASSWORD
+      restartPolicy: Always
