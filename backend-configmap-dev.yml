@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmap
+  namespace: form-k8s-dev
+data:
+  MONGO_HOST: mongodb
+  MONGO_PORT: "27017"
+  MONGO_DB: "training"
