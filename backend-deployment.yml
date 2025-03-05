@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: axelpereira/k8s-training-test-app-back:1.1
+        image: axelpereira/k8s-training-test-app-back:1.3
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
@@ -46,4 +46,18 @@ spec:
             secretKeyRef:
               name: backend-secret
               key: MONGO_PASSWORD
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 3  # Démarre après 3 secondes
+          periodSeconds: 5        # Vérifie toutes les 5 secondes
+          failureThreshold: 3     # Échoue après 3 échecs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10  # Démarre après 10 secondes
+          periodSeconds: 5         # Vérifie toutes les 5 secondes
+          failureThreshold: 2      # Redémarre après 2 échecs consécutifs
       restartPolicy: Always
