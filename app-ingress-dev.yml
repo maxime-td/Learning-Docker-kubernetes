@@ -14,13 +14,13 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: frontend
+            name: front-training-app
             port:
               number: 80
       - path: /env/api(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
-            name: backend
+            name: back-training-app
             port:
               number: 80
